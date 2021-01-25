@@ -75,7 +75,7 @@ class main_window(QDialog):
         l_run_item_VBOX.addLayout(l_run_item_VBOX_HBOX)
 
         #_#_#_# Add Item - Name Input
-        self.w_run_item_AddItem_Label = QLabel('Surfix name:', self)
+        self.w_run_item_AddItem_Label = QLabel('Suffix name:', self)
         self.w_run_item_AddItem_Input = QLineEdit(self)
 
         l_run_item_VBOX_AddItem.addWidget(self.w_run_item_AddItem_Label)
@@ -129,14 +129,14 @@ class main_window(QDialog):
         #### END OF UI #####
 
         # AT START OF RUN
-        self.load_surfix_list()
+        self.load_suffix_list()
         self.fileDict = {}
 
     def browse_path(self):
         path = QFileDialog.getExistingDirectory(self, "Choose path...")
         self.w_browser_address.setText(path)
 
-    def path_JSON(self,file="surfix_list.json"):
+    def path_JSON(self,file="suffix_list.json"):
         script_dir = Path(".")
         json_dir = script_dir / file
         return json_dir
@@ -147,50 +147,50 @@ class main_window(QDialog):
         data = data.get("texture_type")
         return data
 
-    def load_surfix_list(self):
+    def load_suffix_list(self):
         for item in self.load_JSON(self.path_JSON()):
-            self.add_item_to_surfix_list(item)
+            self.add_item_to_suffix_list(item)
         self.w_announcer_label.setText('Texture type list has been loaded successfully!')
 
-    def read_surfix_list(self):
+    def read_suffix_list(self):
         inAppList = []
         for i in range(self.w_run_item_List.count()):
             itemToText = self.w_run_item_List.item(i)
             inAppList.append(itemToText.text())
         return inAppList        
 
-    def save_surfix_list(self):
+    def save_suffix_list(self):
         saveDict = {"texture_type":[]}
-        inAppList = self.read_surfix_list()
+        inAppList = self.read_suffix_list()
         saveDict["texture_type"].extend(inAppList)
         with open(self.path_JSON(), 'w') as toSaveFile:
             json.dump(saveDict, toSaveFile)
 
-    def check_existed_surfix(self, itemToCheck):
+    def check_existed_suffix(self, itemToCheck):
         checkList = self.w_run_item_List.findItems(itemToCheck, Qt.MatchFixedString)
         if not len(checkList)==0:
             return True
             
-    def add_item_to_surfix_list(self, itemToAdd):
-        if not self.check_existed_surfix(itemToAdd):
+    def add_item_to_suffix_list(self, itemToAdd):
+        if not self.check_existed_suffix(itemToAdd):
             self.w_run_item_List.addItem(itemToAdd)
-            self.w_announcer_label.setText('Surfix has added successfully!')
+            self.w_announcer_label.setText('Suffix has added successfully!')
         else:
-            self.w_announcer_label.setText('!!! Surfix already exists in list !!!')
+            self.w_announcer_label.setText('!!! Suffix already exists in list !!!')
 
-    def remove_surfix_from_list(self, itemToRemove):
+    def remove_suffix_from_list(self, itemToRemove):
         self.w_run_item_List.takeItem(itemToRemove)
-        self.w_announcer_label.setText('Surfix has been deleted!')
+        self.w_announcer_label.setText('Suffix has been deleted!')
 
     def add_button_clicked(self):
         textInInput = self.w_run_item_AddItem_Input.text()
-        self.add_item_to_surfix_list(textInInput)
-        self.save_surfix_list()
+        self.add_item_to_suffix_list(textInInput)
+        self.save_suffix_list()
 
     def remove_button_clicked(self):
         currentRow = self.w_run_item_List.currentRow()
-        self.remove_surfix_from_list(currentRow)
-        self.save_surfix_list()
+        self.remove_suffix_from_list(currentRow)
+        self.save_suffix_list()
 
     def get_address(self):
         path = Path(self.w_browser_address.text())
@@ -211,9 +211,9 @@ class main_window(QDialog):
 
     def clear_junk_in_name(self, string):
         splitedString = str(string).split("_")
-        surfixList = self.read_surfix_list()
-        for surfix in surfixList:
-            if splitedString[-1]==surfix:
+        suffixList = self.read_suffix_list()
+        for suffix in suffixList:
+            if splitedString[-1]==suffix:
                 if self.safe_lock(splitedString[-2]):
                     splitedString.pop(-2)
                     continue
@@ -221,12 +221,12 @@ class main_window(QDialog):
         newString = separator.join(splitedString)
         return newString
  
-    def read_surfix_list(self):
-        surfixList = []
+    def read_suffix_list(self):
+        suffixList = []
         for i in range(self.w_run_item_List.count()):
             itemToText = self.w_run_item_List.item(i)
-            surfixList.append(itemToText.text())
-        return surfixList
+            suffixList.append(itemToText.text())
+        return suffixList
 
     def safe_lock(self, string):
         if len(string)>12:
