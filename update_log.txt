@@ -1,0 +1,9 @@
+v1.1:
+- Switch form using os.path to pathlib.Path
+- Add Revert button
+- Change file name "list.json" to "surfix_list.json"
+- Fixed bugs:
+	+ Run with blank location
+	+ Run with non-existed location
+- Already known bugs:
+	+ Revert with changed location
